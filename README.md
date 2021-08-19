@@ -1,4 +1,4 @@
-# Luke's Auto-Rice Bootstrapping Scripts (LARBS)
+# Linux Auto-Rice Bootstrapping Scripts (LARBS)
 
 ## Installation:
 
