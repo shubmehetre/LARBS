@@ -16,14 +16,14 @@ esac done
 
 [ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git"
 [ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/LukeSmithxyz/LARBS/master/progs.csv"
-[ -z "$aurhelper" ] && aurhelper="paru"
+[ -z "$aurhelper" ] && aurhelper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
 ### FUNCTIONS ###
 
 installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
-error() { echo "ERROR: $1" ; exit 1;}
+error() { printf "%s\n" "$1" >&2; exit 1; }
 
 welcomemsg() { \
 	dialog --title "Welcome!" --msgbox "Welcome to Luke's Auto-Rice Bootstrapping Script!\\n\\nThis script will automatically install a fully-featured Linux desktop, which I use as my main machine.\\n\\n-Luke" 10 60
@@ -192,7 +192,7 @@ grep -q "ILoveCandy" /etc/pacman.conf || sed -i "/#VerbosePkgLists/a ILoveCandy"
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-manualinstall $aurhelper || error "Failed to install AUR helper."
+manualinstall yay-bin || error "Failed to install AUR helper."
 
 # The command that does all the installing. Reads the progs.csv file and
 # installs each needed program the way required. Be sure to run this only after
@@ -242,7 +242,7 @@ grep -q "OTHER_OPTS='-a pulseaudio -m alsa_seq -r 48000'" /etc/conf.d/fluidsynth
 	echo "OTHER_OPTS='-a pulseaudio -m alsa_seq -r 48000'" >> /etc/conf.d/fluidsynth
 
 # Start/restart PulseAudio.
-killall pulseaudio; sudo -u "$name" pulseaudio --start
+pkill -15 -x 'pulseaudio'; sudo -u "$name" pulseaudio --start
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
