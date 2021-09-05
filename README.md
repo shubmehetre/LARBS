@@ -2,11 +2,12 @@
 
 ## Installation:
 
-On an Arch-based distribution as root, run the following:
+On an Arch-based distribution as root, after a minimal install, run the following:
 
 ```
 curl -LO https://raw.githubusercontent.com/shubmehetre/LARBS/master/larbs.sh
 sh larbs.sh
+ 
 ```
 
 That's it.
