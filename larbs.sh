@@ -212,11 +212,7 @@ yes | sudo -u "$name" $aurhelper -S libxft-bgra-git >/dev/null 2>&1
 # Install the dotfiles in the user's home directory
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 rm -f "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
-# Create default urls file if none exists.
-[ ! -f "/home/$name/.config/newsboat/urls" ] && echo "http://lukesmith.xyz/rss.xml
-https://notrelated.libsyn.com/rss
-https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA \"~Luke Smith (YouTube)\"
-https://www.archlinux.org/feeds/news/" > "/home/$name/.config/newsboat/urls"
+
 # make git ignore deleted LICENSE & README.md files
 git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
 
@@ -248,7 +244,7 @@ grep -q "OTHER_OPTS='-a pulseaudio -m alsa_seq -r 48000'" /etc/conf.d/fluidsynth
 	echo "OTHER_OPTS='-a pulseaudio -m alsa_seq -r 48000'" >> /etc/conf.d/fluidsynth
 
 # Start/restart PulseAudio.
-pkill -15 -x 'pulseaudio'; sudo -u "$name" pulseaudio --start
+pkill -15 -x 'pulseaudio'; sudo -u "$name" pulseaudio --start; amixer sset Master unmute 2>/dev/null
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
