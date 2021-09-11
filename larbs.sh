@@ -144,6 +144,9 @@ housekeeping() {
 	# udev rule for acpilight
 	echo SUBSYSTEM=="backlight", ACTION=="add", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="/bin/chmod g+w
 /sys/class/backlight/%k/brightness" > /etc/udev/rules.d/90-backlight.rules
+	
+	# creating sym link for background
+	ln -sf $HOME/.local/share/dystopia1.png $HOME/.local/share/bg
 }
 
 finalize(){ \
