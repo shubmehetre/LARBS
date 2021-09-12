@@ -139,6 +139,17 @@ putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
 	rmmod pcspkr
 	echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;}
+	
+autologin() {
+	cat > /etc/systemd/system/getty@tty1.service.d/override.conf <<- _EOF_
+	# overriding login 
+	[Service]
+	ExecStart=
+	ExecStart=-/usr/bin/agetty --skip-login --login-options $USER --noclear %I $TERM
+
+}
+
+# silentboot() { }
 
 housekeeping() {
 	# udev rule for acpilight
@@ -256,6 +267,7 @@ newperms "%wheel ALL=(ALL) ALL #LARBS
 
 # Housekeeping items
 housekeeping
+autologin
 
 # Last message! Install complete!
 finalize
