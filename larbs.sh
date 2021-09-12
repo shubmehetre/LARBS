@@ -141,6 +141,8 @@ systembeepoff() { dialog --infobox "Getting rid of that retarded error beep soun
 	echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;}
 	
 autologin() {
+	[ ! -d /etc/systemd/system/getty@tty1.service.d ] && filedir="/etc/systemd/system/getty@tty1.service.d/" && mkdir -p "$filedir";
+	
 	cat > /etc/systemd/system/getty@tty1.service.d/override.conf <<- _EOF_
 	# overriding login 
 	[Service]
