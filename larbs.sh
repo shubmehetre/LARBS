@@ -160,6 +160,10 @@ housekeeping() {
 	
 	# creating sym link for background
 	ln -sf $HOME/.local/share/dystopia1.png $HOME/.local/share/bg
+	
+	# installing language servers
+	npm install -g pyright
+	npm install -g typescript typescript-language-server
 }
 
 finalize(){ \
