@@ -148,7 +148,7 @@ autologin() {
 	[Service]
 	ExecStart=
 	ExecStart=-/usr/bin/agetty --skip-login --login-options $USER --noclear %I $TERM
-
+	_EOF_
 }
 
 # silentboot() { }
@@ -163,7 +163,7 @@ housekeeping() {
 	
 	# installing language servers
 	npm install -g pyright
-	npm install -g typescript typescript-language-server
+	# npm install -g typescript typescript-language-server
 }
 
 finalize(){ \
