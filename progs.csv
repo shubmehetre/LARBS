@@ -85,3 +85,4 @@ P,ueberzug,"Überzug is a command line util which allows to draw images on termi
 P,neovim,"Provider for python files"
 ,rclone,"file sync master"
 ,jq,"command-line JSON processor"
+,pinta,"ms paint alternative"
