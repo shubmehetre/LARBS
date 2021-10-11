@@ -164,6 +164,9 @@ housekeeping() {
 	# installing language servers
 	npm install -g pyright
 	# npm install -g typescript typescript-language-server
+	
+	# remove grub timeout
+	sed -i "s/^#GRUB_TIMEOUT=5$/GRUB_TIMEOUT=0/" /etc/default/grub
 }
 
 finalize(){ \
