@@ -147,7 +147,7 @@ autologin() {
 	# overriding login 
 	[Service]
 	ExecStart=
-	ExecStart=-/usr/bin/agetty --skip-login --login-options $USER --noclear %I $TERM
+	ExecStart=-/usr/bin/agetty --skip-login --login-options $name --noclear %I $TERM
 	_EOF_
 }
 
