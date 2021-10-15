@@ -59,30 +59,41 @@ adduserandpass() { \
 	dialog --infobox "Adding user \"$name\"..." 4 50
 	useradd -m -g wheel -s /bin/zsh "$name" >/dev/null 2>&1 ||
 	usermod -a -G wheel "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
-	repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
+	export repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
 	echo "$name:$pass1" | chpasswd
 	unset pass1 pass2 ;}
 
 refreshkeys() { \
-	dialog --infobox "Refreshing Arch Keyring..." 4 40
-	pacman -Q artix-keyring >/dev/null 2>&1 && pacman --noconfirm -S artix-keyring artix-archlinux-support >/dev/null 2>&1
-	pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
-	}
+	case "$(readlink -f /sbin/init)" in
+		*systemd* )
+			dialog --infobox "Refreshing Arch Keyring..." 4 40
+			pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
+			;;
+		*)
+			dialog --infobox "Enabling Arch Repositories..." 4 40
+			pacman --noconfirm --needed -S artix-keyring artix-archlinux-support >/dev/null 2>&1
+			for repo in extra community; do
+				grep -q "^[$repo]" /etc/pacman.conf ||
+					echo "[$repo]
+Include = /etc/pacman.d/mirrorlist-arch" >> /etc/pacman.conf
+			done
+			pacman-key --populate archlinux
+			;;
+	esac ;}
 
 newperms() { # Set special sudoers settings for install (or after).
 	sed -i "/#LARBS/d" /etc/sudoers
 	echo "$* #LARBS" >> /etc/sudoers ;}
 
-manualinstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
-	[ -f "/usr/bin/$1" ] || (
+manualinstall() { # Installs $1 manually. Used only for AUR helper here.
+	# Should be run after repodir is created and var is set.
 	dialog --infobox "Installing \"$1\", an AUR helper..." 4 50
-	cd /tmp || exit 1
-	rm -rf /tmp/"$1"*
-	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
-	sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
-	cd "$1" &&
-	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1 || return 1
-	cd /tmp || return 1) ;}
+	sudo -u "$name" mkdir -p "$repodir/$1"
+	sudo -u "$name" git clone --depth 1 "https://aur.archlinux.org/$1.git" "$repodir/$1" >/dev/null 2>&1 ||
+		{ cd "$repodir/$1" || return 1 ; sudo -u "$name" git pull --force origin master;}
+	cd "$repodir/$1"
+	sudo -u "$name" -D "$repodir/$1" makepkg --noconfirm -si >/dev/null 2>&1 || return 1
+}
 
 maininstall() { # Installs all needed programs from main repo.
 	dialog --title "LARBS Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
@@ -215,9 +226,10 @@ adduserandpass || error "Error adding username and/or password."
 # in a fakeroot environment, this is required for all builds with AUR.
 newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
 
-# Make pacman and paru colorful and adds eye candy on the progress bar because why not.
-grep -q "^Color" /etc/pacman.conf || sed -i "s/^#Color$/Color/" /etc/pacman.conf
+# Make pacman colorful, concurrent downloads and Pacman eye-candy.
+
 grep -q "ILoveCandy" /etc/pacman.conf || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
+sed -i "s/^#ParallelDownloads = 8$/ParallelDownloads = 5/;s/^#Color$/Color/" /etc/pacman.conf
 
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
