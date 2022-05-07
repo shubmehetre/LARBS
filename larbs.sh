@@ -176,6 +176,7 @@ housekeeping() {
 	# installing language servers
 	npm install -g pyright
 	npm install -g vscode-langservers-extracted
+	npm install -g neovim
 	# npm install -g typescript typescript-language-server
 	
 	# remove grub timeout
