@@ -30,6 +30,7 @@ A,brave-bin,"is an elegant browser with built-in adblocking, tor and other featu
 ,ntfs-3g,"allows accessing NTFS partitions."
 ,pipewire,"is the audio system."
 ,pipewire-pulse,"gives pipewire compatibility with PulseAudio programs."
+,pipewire-alsa,"Alsa config for pipewire"
 ,pamixer,"is a command-line audio interface."
 ,alsa-utils,"Advanced Linux Sound Architecture"
 A,sc-im,"is an Excel-like terminal spreadsheet manager."
