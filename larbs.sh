@@ -290,10 +290,10 @@ $aurhelper -Y --save --devel
 # and all build dependencies are installed.
 installationloop
 
-# Install the dotfiles in the user's home directory, but remove .git dir and
-# other unnecessary files.
+# Install the dotfiles in the user's home directory, but remove other unnecessary files.
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
-rm -rf "/home/$name/.git/" "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
+rm -rf "/home/$name/.bashrc/" "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml" "/home/$name/bash_logout" "/home/$name/bash_profile"
+
 
 # Install vim plugins if not alread present.
 # [ ! -f "/home/$name/.config/nvim/autoload/plug.vim" ] && vimplugininstall
