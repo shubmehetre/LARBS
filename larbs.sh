@@ -209,7 +209,7 @@ housekeeping() {
 /sys/class/backlight/%k/brightness" > /etc/udev/rules.d/90-backlight.rules
 
 	# creating sym link for background
-	ln -sf $HOME/.local/share/dystopia1.png $HOME/.local/share/bg
+	ln -sf /home/$user/.local/share/slayer.jpg /home/$user/.local/share/bg
 
 	# installing language servers
 	# npm install -g pyright
