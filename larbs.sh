@@ -218,7 +218,11 @@ housekeeping() {
 	# npm install -g typescript typescript-language-server
 
 	# remove grub timeout
-	sed -i "s/^#GRUB_TIMEOUT=5$/GRUB_TIMEOUT=0/" /etc/default/grub
+	sed -i "s/^#GRUB_TIMEOUT=5$/GRUB_TIMEOUT=0/" /etc/default/grub || error "Failed to install AUR helper."
+
+	# remove systemd-boot timeout
+	sed -i "s/^timeout=.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
+
 }
 
 finalize() {
