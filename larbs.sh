@@ -223,9 +223,10 @@ housekeeping() {
 	# remove systemd-boot timeout
 	sed -i "s/^timeout=.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
 
-  # Enable Audio
+  # Enable Systemd Services
   systemctl enable --user pipewire
   systemctl enable --user pipewire-pulse
+  systemctl enable NetworkManager
 
 }
 
