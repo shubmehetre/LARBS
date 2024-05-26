@@ -229,6 +229,7 @@ housekeeping() {
   systemctl enable --user pipewire
   systemctl enable --user pipewire-pulse
   systemctl enable NetworkManager
+  systemctl enable bluetooth
 
 }
 
