@@ -68,7 +68,7 @@ adduserandpass() {
 	# Adds user `$name` with password $pass1.
 	whiptail --infobox "Adding user \"$name\"..." 7 50
 	useradd -m -g wheel -s /bin/zsh "$name" >/dev/null 2>&1 ||
-		usermod -a -G wheel,audio,video,input,kvm,storage "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
+		usermod -a -G audio,video,input,kvm,storage "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
 	export repodir="/home/$name/.local/src"
 	mkdir -p "$repodir"
 	chown -R "$name":wheel "$(dirname "$repodir")"
@@ -205,9 +205,9 @@ autologin() {
 
 housekeeping() {
 	# udev rule for acpilight
-	echo SUBSYSTEM=="backlight", ACTION=="add", \
-  RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", \
-  RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness" > /etc/udev/rules.d/90-backlight.rules
+	echo SUBSYSTEM==\"backlight\", ACTION==\"add\", \
+  RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\", \
+  RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\" > /etc/udev/rules.d/90-backlight.rules
 
 
 	# creating sym link for background
@@ -223,11 +223,11 @@ housekeeping() {
 	# sed -i "s/^#GRUB_TIMEOUT=5$/GRUB_TIMEOUT=0/" /etc/default/grub || error "Failed to install AUR helper."
 
 	# remove systemd-boot timeout
-	sed -i "s/^timeout=.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
+	sed -i "s/^timeout=\s.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
 
   # Enable Systemd Services
-  systemctl enable --user pipewire
-  systemctl enable --user pipewire-pulse
+  su - $name -c systemctl enable --user pipewire
+  su - $name -c systemctl enable --user pipewire-pulse
   systemctl enable NetworkManager
   systemctl enable bluetooth
 
