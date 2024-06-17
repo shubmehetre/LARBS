@@ -211,7 +211,7 @@ housekeeping() {
 
 
 	# creating sym link for background
-	ln -sf /home/$name/.local/share/slayer.jpg /home/$user/.local/share/bg
+	ln -sf /home/$name/.local/share/slayer.jpg /home/$name/.local/share/bg
 
 	# installing language servers
 	# npm install -g pyright
@@ -223,7 +223,7 @@ housekeeping() {
 	# sed -i "s/^#GRUB_TIMEOUT=5$/GRUB_TIMEOUT=0/" /etc/default/grub || error "Failed to install AUR helper."
 
 	# remove systemd-boot timeout
-	sed -i "s/^timeout=\s.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
+	# sed -i "s/^timeout=\s.$/timeout=0/" /boot/loader/loader.conf || error "Failed to install AUR helper."
 
   # Enable Systemd Services
   su - $name -c systemctl enable --user pipewire
