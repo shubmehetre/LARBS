@@ -211,7 +211,7 @@ housekeeping() {
 
 
 	# creating sym link for background
-	ln -sf /home/$name/.local/share/slayer.jpg /home/$name/.local/share/bg
+	ln -sf /home/$name/.local/share/goku_best.png /home/$name/.local/share/bg
 
 	# installing language servers
 	# npm install -g pyright
