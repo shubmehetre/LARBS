@@ -202,6 +202,22 @@ autologin() {
 }
 
 # silentboot() { }
+create_gpg_agent_conf() {
+  local gpg_conf_dir="$HOME/.gnupg"
+  local conf_file="$gpg_conf_dir/gpg-agent.conf"
+  local content="pinentry-program /usr/bin/pinentry-gtk"
+
+  # Create the .gnupg directory if it doesn't exist
+  if [[ ! -d "$gpg_conf_dir" ]]; then
+    mkdir -p "$gpg_conf_dir"
+    chmod 700 "$gpg_conf_dir"  # Set correct permissions for the directory
+  fi
+
+  # Write content to gpg-agent.conf
+  echo "$content" > "$conf_file"
+  chmod 600 "$conf_file"  # Set correct permissions for the file
+
+}
 
 housekeeping() {
 	# udev rule for acpilight
@@ -346,6 +362,7 @@ echo "kernel.dmesg_restrict = 0" > /etc/sysctl.d/dmesg.conf
 
 # Housekeeping items
 housekeeping
+create_gpg_agent_conf
 autologin
 
 # Cleanup
